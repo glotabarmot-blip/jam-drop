@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@scalekit-sdk/node": "^2.0.0"
+    "@scalekit-sdk/node": "^1.0.10"
   }
 }

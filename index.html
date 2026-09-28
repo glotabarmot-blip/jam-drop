@@ -236,7 +236,7 @@ h2 {
 .secret-section h4 { color: #9f7aea; }
 .promo-row { display: flex; gap: 10px; flex-wrap: wrap; }
 .promo-input, .secret-input { flex: 1; min-width: 180px; padding: 12px 14px; background: rgba(0,0,0,0.4); border: 2px solid #2a3157; border-radius: 8px; color: #fff; font-size: 15px; font-weight: bold; letter-spacing: 1px; transition: 0.3s; text-transform: uppercase; min-width: 0; }
-.secret-input { border-color: #4a3a6a; }
+.secret-input { border-color: #4a3a6a; text-transform: none; }
 .promo-input:focus { outline: none; border-color: #ff9500; box-shadow: 0 0 15px rgba(255, 149, 0, 0.4); }
 .secret-input:focus { outline: none; border-color: #9f7aea; box-shadow: 0 0 15px rgba(159, 122, 234, 0.4); }
 .promo-msg { text-align: center; margin-top: 10px; font-size: 14px; min-height: 20px; }
@@ -247,6 +247,7 @@ h2 {
 .admin-field label { display: block; color: #b8a8d8; font-size: 12px; margin-bottom: 5px; text-transform: uppercase; }
 .admin-input { width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.4); border: 2px solid #4a3a6a; border-radius: 8px; color: #fff; font-size: 15px; }
 .admin-input:focus { outline: none; border-color: #9f7aea; }
+.admin-hint { font-size: 11px; color: #8899bb; text-align: center; margin-top: 8px; line-height: 1.4; }
 .inventory-header { display: flex; justify-content: space-between; align-items: center; margin: 22px 0 12px; flex-wrap: wrap; gap: 10px; }
 .inventory-title { color: #ff9500; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; }
 .sell-all-btn { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
@@ -652,10 +653,17 @@ h2 {
         <div id="secretMsg" class="promo-msg"></div>
         <div class="admin-panel" id="adminPanel">
           <h5>⚡ Пополнение игроку</h5>
-          <div class="admin-field"><label>Ник игрока</label><input type="text" class="admin-input" id="adminNick" placeholder="Ник"></div>
-          <div class="admin-field"><label>Сумма</label><input type="number" class="admin-input" id="adminAmount" placeholder="5000" min="1"></div>
+          <div class="admin-field">
+            <label>Ник игрока</label>
+            <input type="text" class="admin-input" id="adminNick" placeholder="Введите ник (a-z, 0-9, _)" maxlength="20">
+          </div>
+          <div class="admin-field">
+            <label>Сумма</label>
+            <input type="number" class="admin-input" id="adminAmount" placeholder="5000" min="1">
+          </div>
           <button class="btn btn-primary" onclick="adminTopUp()" style="width:100%; padding:12px;">💸 Пополнить</button>
           <div id="adminMsg" class="promo-msg"></div>
+          <div class="admin-hint">Игрок должен быть зарегистрирован. Проверяется по списку.</div>
         </div>
       </div>
     </div>
@@ -681,10 +689,10 @@ const TG_LINK = 'https://t.me/jamdrop_777';
 const ADMIN_PASSWORD = 'Glist228443434322ff';
 const USERS_KEY = 'jamdrop_users_list';
 const SESSION_KEY = 'jamdrop_current_user';
-const NICK_LOCK_PREFIX = 'jamdrop_nick_locked_'; // ник нельзя менять после первого входа через Google
+const NICK_LOCK_PREFIX = 'jamdrop_nick_locked_';
 const PAYBACK_RATIO_NORMAL = 0.35;
 const PAYBACK_RATIO_SPECIAL = 0.20;
-const BALANCE_CAP = 9700;
+const BALANCE_CAP = 9700; // порог: и по балансу, и по сумме инвентаря
 
 const API_SKINS = [
   'https://cdn.jsdelivr.net/gh/ByMykel/CSGO-API@main/public/api/en/skins.json',
@@ -741,19 +749,12 @@ function getGoogleUser() {
       let parsed = null;
       try { parsed = JSON.parse(b64DecodeUnicode(raw)); } catch(e) {}
       if (!parsed) { try { parsed = JSON.parse(atob(raw)); } catch(e) {} }
-      if (parsed) {
-        if (parsed.email) {
-          // email оставляем как есть — он постоянный идентификатор
-          parsed.email = String(parsed.email).toLowerCase();
-        }
-        return parsed;
-      }
+      if (parsed && parsed.email) parsed.email = String(parsed.email).toLowerCase();
+      return parsed;
     }
   }
   return null;
 }
-
-/* ★ Постоянный ник: если email уже входил — берём сохранённый ник */
 function getPersistentNick(email) {
   if (!email) return null;
   const key = NICK_LOCK_PREFIX + email;
@@ -768,22 +769,16 @@ function lockNick(email, nick) {
   if (!email || !nick) return;
   localStorage.setItem(NICK_LOCK_PREFIX + email, sanitizeNick(nick));
 }
-
 function checkGoogleAuth() {
   const googleUser = getGoogleUser();
   if (!googleUser || !googleUser.email) return false;
   const email = googleUser.email;
-
-  // 1. Проверяем — может email уже входил, тогда берём его постоянный ник
   let nick = getPersistentNick(email);
-
   if (!nick) {
-    // 2. Если нет — генерим ник из googleUser.name или email и фиксируем
     nick = sanitizeNick(googleUser.name || email.split('@')[0]);
     if (nick.length < 3) nick = 'user' + Date.now().toString().slice(-6);
     lockNick(email, nick);
   }
-
   const users = getUsersList();
   const exist = users.find(u => u.nick.toLowerCase() === nick.toLowerCase());
   if (!exist) {
@@ -794,7 +789,6 @@ function checkGoogleAuth() {
   enterGame(nick);
   return true;
 }
-
 function skinImg(skin, size = 90) {
   const fallback = `data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22${size}%22%3E%3Crect width=%22100%22 height=%22${size}%22 fill=%22%232a3157%22/%3E%3Ctext x=%2250%22 y=%22${size/2 + 8}%22 text-anchor=%22middle%22 fill=%22%23ffcc00%22 font-family=%22Arial%22 font-weight=%22bold%22 font-size=%2220%22%3E%F0%9F%94%AB%3C/text%3E%3C/svg%3E`;
   const icon = (skin && skin.icon) ? skin.icon : fallback;
@@ -858,7 +852,6 @@ const CASES = [
   { id: 'c22', name: 'Императорский', price: 35000, maxDrop: 340000, rarities: ['covert','covert','covert','covert','covert'], icon: '' },
   { id: 'c23', name: 'Кейс Богов', price: 40000, maxDrop: 390000, rarities: ['covert','covert','covert','covert','covert'], icon: '' },
   { id: 'c24', name: 'Кейс Космоса', price: 45000, maxDrop: 440000, rarities: ['covert','covert','covert','covert','covert'], icon: '' },
-  // ★ Кейс Дьявола: 7 окупных (>50k), остальные 10 — дешевле 50k
   { id: 'c25', name: 'Кейс Дьявола', price: 50000, maxDrop: 490000, rarities: ['covert','covert','covert','covert','covert'], icon: '', paybackOverride: 7, lossCountMin: 10 },
   { id: 'c26', name: 'Королевский', price: 60000, maxDrop: 590000, rarities: ['covert','covert','covert','covert','covert'], icon: '' },
   { id: 'c27', name: 'Кейс Ангела', price: 70000, maxDrop: 690000, rarities: ['covert','covert','covert','covert','covert'], icon: '' },
@@ -886,16 +879,21 @@ function userKey(nick) { return 'jamdrop_user_' + sanitizeNick(nick).toLowerCase
 function saveState() { if (currentUser) localStorage.setItem(userKey(currentUser), JSON.stringify(state)); }
 function loadState(nick) { try { const s = localStorage.getItem(userKey(nick)); if (s) return { ...defaultState(), ...JSON.parse(s) }; } catch(e) {} return defaultState(); }
 
-function isBalanceCapped() { return !!(state && state.balance >= BALANCE_CAP); }
+/* ★ Проверка порога: и по балансу, и по сумме скинов в инвентаре */
+function getInventoryTotal() {
+  if (!state || !Array.isArray(state.inventory)) return 0;
+  return state.inventory.reduce((sum, it) => sum + (it.price || 0), 0);
+}
+function isBalanceCapped() {
+  if (!state) return false;
+  if (state.balance >= BALANCE_CAP) return true;
+  if (getInventoryTotal() >= BALANCE_CAP) return true;
+  return false;
+}
 
 /* ============================================================ */
-/* ============ ★ КОНСОЛЬНАЯ СИСТЕМА ПОПОЛНЕНИЯ =============== */
+/* ============ КОНСОЛЬНАЯ СИСТЕМА ПОПОЛНЕНИЯ ================= */
 /* ============================================================ */
-/* Использование в DevTools:
- *   topup("glotabarmot", 5000);   — начислит игроку 5000
- *   topupHelp();                  — справка
- *   listUsers();                  — список игроков
- */
 function topup(nick, amount) {
   const cleanNick = sanitizeNick(nick);
   const num = Number(amount);
@@ -903,18 +901,8 @@ function topup(nick, amount) {
   if (!num || num <= 0 || !isFinite(num)) { console.error('❌ Неверная сумма'); return false; }
 
   const users = getUsersList();
-  let exist = users.find(u => u.nick.toLowerCase() === cleanNick.toLowerCase());
-
-  // если игрока нет — создаём запись
-  if (!exist) {
-    exist = { nick: cleanNick, pass: 'created_by_console_' + Date.now(), created: Date.now() };
-    users.push(exist);
-    saveUsersList(users);
-    localStorage.setItem(userKey(cleanNick), JSON.stringify(defaultState()));
-    console.log(`ℹ️ Игрок "${cleanNick}" не найден, создан новый аккаунт.`);
-  } else {
-    console.log(`✅ Игрок "${exist.nick}" найден.`);
-  }
+  const exist = users.find(u => u.nick.toLowerCase() === cleanNick.toLowerCase());
+  if (!exist) { console.error(`❌ Игрок "${cleanNick}" не найден в списке. Сначала он должен зарегистрироваться.`); return false; }
 
   const playerKey = userKey(exist.nick);
   let playerData;
@@ -924,9 +912,8 @@ function topup(nick, amount) {
   playerData.balance = before + num;
   localStorage.setItem(playerKey, JSON.stringify(playerData));
 
-  console.log(`💸 Пополнено: ${exist.nick} → ${before.toLocaleString()} + ${num.toLocaleString()} = ${playerData.balance.toLocaleString()} 🪙`);
+  console.log(`💸 ${exist.nick}: ${before.toLocaleString()} + ${num.toLocaleString()} = ${playerData.balance.toLocaleString()} 🪙`);
 
-  // если это текущий игрок — обновляем UI
   if (currentUser && currentUser.toLowerCase() === exist.nick.toLowerCase()) {
     state.balance = playerData.balance;
     saveState();
@@ -935,10 +922,9 @@ function topup(nick, amount) {
   }
   return true;
 }
-
 function listUsers() {
   const users = getUsersList();
-  console.log('%c👥 Список игроков:', 'color:#ff9500; font-weight:bold;');
+  console.log('%c👥 Игроки:', 'color:#ff9500; font-weight:bold;');
   if (!users.length) { console.log('  (пусто)'); return; }
   users.forEach((u, i) => {
     let bal = 0;
@@ -946,22 +932,13 @@ function listUsers() {
     console.log(`  ${i + 1}. ${u.nick} — ${bal.toLocaleString()} 🪙`);
   });
 }
-
 function topupHelp() {
   console.log('%c🎁 Система пополнения Jam Drop', 'color:#ffcc00; font-size:16px; font-weight:bold;');
-  console.log('');
   console.log('%ctopup("ник", сумма);', 'color:#4ade80; font-weight:bold;');
-  console.log('   — пополнить игрока по нику. Если игрока нет — создастся.');
-  console.log('   Пример: topup("glotabarmot", 5000);');
-  console.log('');
+  console.log('   — пополнить игрока. Игрок должен существовать.');
   console.log('%clistUsers();', 'color:#4ade80; font-weight:bold;');
-  console.log('   — показать всех игроков и их балансы.');
-  console.log('');
-  console.log('%ctopupHelp();', 'color:#4ade80; font-weight:bold;');
-  console.log('   — эта справка.');
+  console.log('   — все игроки и балансы.');
 }
-
-// экспорт в window, чтобы работало из консоли
 window.topup = topup;
 window.listUsers = listUsers;
 window.topupHelp = topupHelp;
@@ -988,8 +965,6 @@ function buildCasePool(caseObj, exclusivePools) {
   const step = (maxP - minP) / Math.max(selected.length - 1, 1);
   selected.forEach((s, i) => { s.price = Math.round(minP + step * i); });
   const casePrice = caseObj.price;
-
-  // ★ Кейс Дьявола: 7 окупных, но не меньше 10 скинов дешевле цены кейса
   let paybackCount;
   if (caseObj.paybackOverride) {
     paybackCount = Math.min(caseObj.paybackOverride, selected.length);
@@ -1001,7 +976,6 @@ function buildCasePool(caseObj, exclusivePools) {
     paybackCount = Math.max(2, Math.round(selected.length * PAYBACK_RATIO_NORMAL));
   }
   const lossCount = selected.length - paybackCount;
-
   selected.sort((a, b) => a.price - b.price);
   const lossMax = Math.floor(casePrice * 0.85);
   for (let i = 0; i < lossCount; i++) {
@@ -1017,7 +991,6 @@ function buildCasePool(caseObj, exclusivePools) {
   selected.forEach(s => exclusivePools.add(s.name));
   caseObj.pool = selected;
 }
-
 function buildSpecialPool(caseObj, sourceArray) {
   const minP = caseObj.minDrop;
   const maxP = caseObj.maxDrop;
@@ -1045,7 +1018,6 @@ function buildSpecialPool(caseObj, sourceArray) {
   selected.sort((a, b) => a.price - b.price);
   caseObj.pool = selected;
 }
-
 function generateCasePools() {
   const exclusivePools = new Set();
   CASES.forEach(caseObj => {
@@ -1172,38 +1144,51 @@ function unlockAdmin() {
   input.value = '';
   document.getElementById('adminPanel').classList.add('active');
 }
+
+/* ★ Реальное пополнение по нику и сумме (проверка существования) */
 function adminTopUp() {
   const rawNick = document.getElementById('adminNick').value.trim();
-  const amount = parseInt(document.getElementById('adminAmount').value);
+  const amount = parseInt(document.getElementById('adminAmount').value, 10);
   const msg = document.getElementById('adminMsg');
   const nick = sanitizeNick(rawNick);
-  if (!nick) { msg.style.color = '#ef4444'; msg.textContent = '❌ Введите ник (латиница/цифры/_)'; return; }
-  if (!amount || amount <= 0) { msg.style.color = '#ef4444'; msg.textContent = '❌ Неверная сумма'; return; }
+
+  if (!nick || nick.length < 3) {
+    msg.style.color = '#ef4444';
+    msg.textContent = '❌ Введите ник (3+ символа: a-z, 0-9, _)';
+    return;
+  }
+  if (!amount || amount <= 0) {
+    msg.style.color = '#ef4444';
+    msg.textContent = '❌ Введите корректную сумму (больше 0)';
+    return;
+  }
 
   const users = getUsersList();
-  let exist = users.find(u => u.nick.toLowerCase() === nick.toLowerCase());
+  const exist = users.find(u => u.nick.toLowerCase() === nick.toLowerCase());
 
   if (!exist) {
-    exist = { nick, pass: 'created_by_admin_' + Date.now(), created: Date.now() };
-    users.push(exist);
-    saveUsersList(users);
-    localStorage.setItem(userKey(nick), JSON.stringify(defaultState()));
+    msg.style.color = '#ef4444';
+    msg.textContent = `❌ Игрок "${nick}" не найден. Он должен сначала зарегистрироваться.`;
+    return;
   }
 
   const playerKey = userKey(exist.nick);
   let playerData;
   try { playerData = JSON.parse(localStorage.getItem(playerKey)) || defaultState(); } catch(e) { playerData = defaultState(); }
 
-  playerData.balance = (playerData.balance || 0) + amount;
+  const before = playerData.balance || 0;
+  playerData.balance = before + amount;
   localStorage.setItem(playerKey, JSON.stringify(playerData));
 
   msg.style.color = '#4ade80';
-  msg.textContent = `✅ ${exist.nick} +${amount.toLocaleString()} 🪙`;
+  msg.textContent = `✅ ${exist.nick}: ${before.toLocaleString()} + ${amount.toLocaleString()} = ${playerData.balance.toLocaleString()} 🪙`;
 
+  // Если пополняешь сам себя — сразу обновляем интерфейс
   if (currentUser && currentUser.toLowerCase() === exist.nick.toLowerCase()) {
     state.balance = playerData.balance;
     saveState();
     updateBalance();
+    updateProfileStats();
   }
 
   document.getElementById('adminNick').value = '';
@@ -1449,13 +1434,17 @@ function backToCases() {
   document.getElementById('openingArea').classList.remove('active');
   document.getElementById('multiProgress').classList.remove('active');
 }
+
+/* ★ getRandomSkin: если достигнут порог (баланс ИЛИ сумма инвентаря) — только неокупные */
 function getRandomSkin(caseObj) {
   let pool = caseObj.pool;
   if (!pool || !pool.length) return { name: 'Unknown', icon: '', rarity: 'common', price: 10 };
+
   if (isBalanceCapped()) {
     const filtered = pool.filter(x => x.price <= caseObj.price);
     if (filtered.length) pool = filtered;
   }
+
   const maxPrice = Math.max(...pool.map(x => x.price));
   const weights = pool.map(x => { const ratio = x.price / maxPrice; return Math.pow(1 - ratio, 1.8) + 0.02; });
   const total = weights.reduce((a, b) => a + b, 0);
@@ -1944,8 +1933,7 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (id === 'adminAmount' || id === 'adminNick') adminTopUp();
     });
   });
-  // приветствие в консоли
-  console.log('%c🎁 Jam Drop console ready. Введи topupHelp() для справки.', 'color:#ff9500; font-size:14px; font-weight:bold;');
+  console.log('%c🎁 Jam Drop ready. topupHelp() — справка по консоли.', 'color:#ff9500; font-size:14px; font-weight:bold;');
 });
 
 /* ============================================================ */

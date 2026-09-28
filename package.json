@@ -2,6 +2,7 @@
   "name": "jam-drop",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@scalekit-sdk/node": "^1.0.10"
   }

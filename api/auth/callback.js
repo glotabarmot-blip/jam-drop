@@ -1,16 +1,16 @@
-import { Scalekit } from '@scalekit-sdk/node';
-
 export default async function handler(req, res) {
-  const scalekit = new Scalekit(
+  // Динамический импорт вместо статического
+  const { ScalekitClient } = await import('@scalekit-sdk/node');
+
+  const scalekit = new ScalekitClient(
     process.env.SCALEKIT_ENV_URL,
     process.env.SCALEKIT_CLIENT_ID,
     process.env.SCALEKIT_CLIENT_SECRET
   );
 
-  const { code, error, error_description } = req.query;
+  const { code, error } = req.query;
 
   if (error) {
-    console.error('Scalekit error:', error, error_description);
     return res.redirect(307, '/?error=auth_failed');
   }
 

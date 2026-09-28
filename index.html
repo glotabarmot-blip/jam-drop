@@ -618,110 +618,83 @@ h2 {
 .upgrade-balance-hint { font-size: 11px; color: #8899bb; text-align: center; line-height: 1.4; margin-top: 8px; }
 .upgrade-balance-hint b { color: #4ade80; }
 
-/* ===================================================== */
-/* ================== МОБИЛЬНАЯ ВЕРСИЯ ================= */
-/* ===================================================== */
+/* ============ MEDIA ============ */
 @media (max-width: 1100px) {
   .upgrade-layout { grid-template-columns: 1fr 1fr; }
   .upgrade-layout > .upgrade-panel:last-child { grid-column: 1 / -1; }
   .cases-layout { grid-template-columns: 260px 1fr; }
 }
-
 @media (max-width: 900px) {
   .cases-layout { grid-template-columns: 1fr; }
   .cases-sidebar { position: static; max-height: none; order: 2; }
   .cases-main { order: 1; }
-
   .upgrade-layout { grid-template-columns: 1fr; }
   .upgrade-layout > .upgrade-panel:last-child { grid-column: auto; }
-
   .header-stats { gap: 6px; }
   .balance-box { padding: 5px 10px; font-size: 13px; }
   .deposit-btn, .profile-btn, .logout-btn { padding: 7px 10px; font-size: 12px; }
-
   .cases-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
   .case-img { height: 70px; }
-
   .multi-buttons { grid-template-columns: repeat(5, 1fr); }
   .multi-btn { padding: 10px 4px; font-size: 14px; }
   .multi-actions .btn { flex: 1 1 45%; padding: 12px 12px; font-size: 13px; }
-
   .roulette-item { flex: 0 0 110px; height: 110px; }
   .roulette-item img { height: 60px; }
   .roulette-item .item-name { font-size: 8px; }
-
   .inventory-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
   .inv-item img { height: 50px; }
-
   .csm-list { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
   .csm-item img { height: 55px; }
-
   .toast { bottom: 15px; right: 15px; left: 15px; max-width: none; text-align: center; }
 }
-
 @media (max-width: 600px) {
   header { padding: 10px 12px; }
   .logo { font-size: 22px; letter-spacing: 1px; }
   .header-stats { gap: 5px; }
   .balance-box { padding: 5px 9px; font-size: 12px; }
   .deposit-btn, .profile-btn, .logout-btn { padding: 6px 9px; font-size: 11px; }
-
   .nav-tab { padding: 8px 14px; font-size: 12px; letter-spacing: 0; }
-
   h2 { letter-spacing: 1px; margin-bottom: 10px; }
   .section-subtitle { font-size: 12px; margin-bottom: 15px; }
-
   main { padding: 12px 10px; }
-
   .cases-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .case-card { padding: 10px; }
   .case-img { height: 60px; }
   .case-name { font-size: 12px; }
-
   .roulette-item { flex: 0 0 90px; height: 90px; margin: 0 4px; }
   .roulette-item img { height: 48px; }
   .roulette-item .item-name { font-size: 7px; }
-
   .multi-open-panel { padding: 14px; }
   .multi-btn { padding: 10px 2px; font-size: 13px; }
   .multi-actions { flex-direction: column; }
   .multi-actions .btn { width: 100%; }
-
   .multi-result-card { padding: 16px; }
   .multi-result-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
   .multi-result-item img { height: 45px; }
   .multi-result-item .mr-sell { font-size: 10px; padding: 5px 6px; }
-
   .profile-avatar { width: 80px; height: 80px; font-size: 40px; border-width: 3px; }
   .profile-stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
   .stat-box { padding: 12px 8px; }
   .stat-box .stat-icon { font-size: 22px; }
-
   .inventory-grid { grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); }
   .inv-item img { height: 45px; }
   .inv-item .inv-name { font-size: 9px; }
-
   .upgrade-inventory { grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); }
   .skin-mini img { height: 32px; }
   .upgrade-center-panel { padding: 14px; }
   .wheel-center { font-size: 16px; border-width: 3px; }
   .target-picker { grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); }
-
   .csm-list { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .csm-item img { height: 50px; }
   .csm-sort-btn { padding: 7px 10px; font-size: 11px; }
-
   .auth-card { padding: 22px 18px; border-width: 2px; }
   .auth-tabs .auth-tab { padding: 10px; font-size: 13px; }
-
   .info-card, .result-card { padding: 22px 18px; border-width: 2px; }
   .info-card .info-icon { font-size: 48px; }
   .info-card .tg-link { padding: 12px 20px; font-size: 14px; }
-
   .btn { padding: 12px 22px; font-size: 14px; }
   .btn-small { padding: 7px 10px; font-size: 11px; }
 }
-
 @media (max-width: 380px) {
   .cases-grid { grid-template-columns: 1fr; }
   .multi-buttons { grid-template-columns: repeat(5, 1fr); }
@@ -974,6 +947,9 @@ h2 {
 </div>
 
 <script>
+/* ============================================================ */
+/* ======================== КОНСТАНТЫ ========================= */
+/* ============================================================ */
 const TG_USERNAME = '@jamdrop_777';
 const TG_LINK = 'https://t.me/jamdrop_777';
 const ADMIN_PASSWORD = 'Glist228443434322ff';
@@ -982,6 +958,7 @@ const SESSION_KEY = 'jamdrop_current_user';
 const MAX_SKINS_PER_CASE = 17;
 const PAYBACK_RATIO_NORMAL = 0.35;
 const PAYBACK_RATIO_SPECIAL = 0.20;
+const BALANCE_CAP = 9700; // после этого порога апгрейды не заходят, кейсы — только неокуп
 
 const API_SKINS = [
   'https://cdn.jsdelivr.net/gh/ByMykel/CSGO-API@main/public/api/en/skins.json',
@@ -1016,20 +993,49 @@ PROMO_SUMS.forEach(sum => {
   });
 });
 
+/* ============================================================ */
+/* ================== УТИЛИТЫ / КОДИРОВКА ===================== */
+/* ============================================================ */
+function sanitizeNick(nick) {
+  // оставляем только латиницу, цифры, _
+  return String(nick || '').replace(/[^a-zA-Z0-9_]/g, '').slice(0, 20);
+}
+
+// правильное декодирование base64 -> UTF-8 (для Google-cookie)
+function b64DecodeUnicode(str) {
+  try {
+    return decodeURIComponent(Array.prototype.map.call(atob(str), c =>
+      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    ).join(''));
+  } catch(e) { return null; }
+}
+
 function getGoogleUser() {
   const cookies = document.cookie.split(';');
   for (let c of cookies) {
     const [name, value] = c.trim().split('=');
     if (name === 'jamdrop_user') {
-      try { return JSON.parse(atob(decodeURIComponent(value))); } catch(e) { return null; }
+      const raw = decodeURIComponent(value || '');
+      let parsed = null;
+      try { parsed = JSON.parse(b64DecodeUnicode(raw)); } catch(e) {}
+      if (!parsed) { try { parsed = JSON.parse(atob(raw)); } catch(e) {} }
+      if (parsed) {
+        if (parsed.name) {
+          const clean = sanitizeNick(parsed.name);
+          parsed.name = clean.length >= 3 ? clean : 'user' + Math.floor(Math.random() * 10000);
+        }
+        return parsed;
+      }
     }
   }
   return null;
 }
+
 function checkGoogleAuth() {
   const googleUser = getGoogleUser();
   if (googleUser && googleUser.email) {
-    const nick = googleUser.name || googleUser.email.split('@')[0];
+    let nick = sanitizeNick(googleUser.name || googleUser.email.split('@')[0]);
+    if (nick.length < 3) nick = 'user' + Date.now().toString().slice(-6);
     const users = getUsersList();
     const exist = users.find(u => u.nick.toLowerCase() === nick.toLowerCase());
     if (!exist) {
@@ -1078,6 +1084,9 @@ let VLAD_SKINS = [];
 let GLOVES = [];
 let TOP_SKINS = [];
 
+/* ============================================================ */
+/* ========================== КЕЙСЫ =========================== */
+/* ============================================================ */
 const CASES = [
   { id: 'c1', name: 'Стартовый кейс', price: 100, maxDrop: 750, rarities: ['common','common','uncommon','rare','epic'], icon: '' },
   { id: 'c2', name: 'Базовый кейс', price: 200, maxDrop: 1000, rarities: ['common','uncommon','uncommon','rare','epic'], icon: '' },
@@ -1103,7 +1112,8 @@ const CASES = [
   { id: 'c22', name: 'Императорский', price: 35000, maxDrop: 340000, rarities: ['covert','covert','covert','covert','covert'], icon: '' },
   { id: 'c23', name: 'Кейс Богов', price: 40000, maxDrop: 390000, rarities: ['covert','covert','covert','covert','covert'], icon: '' },
   { id: 'c24', name: 'Кейс Космоса', price: 45000, maxDrop: 440000, rarities: ['covert','covert','covert','covert','covert'], icon: '' },
-  { id: 'c25', name: 'Кейс Дьявола', price: 50000, maxDrop: 490000, rarities: ['covert','covert','covert','covert','covert'], icon: '' },
+  // ↓↓↓ Кейс Дьявола за 50 000 — ровно 7 окупных скинов через paybackOverride ↓↓↓
+  { id: 'c25', name: 'Кейс Дьявола', price: 50000, maxDrop: 490000, rarities: ['covert','covert','covert','covert','covert'], icon: '', paybackOverride: 7 },
   { id: 'c26', name: 'Королевский', price: 60000, maxDrop: 590000, rarities: ['covert','covert','covert','covert','covert'], icon: '' },
   { id: 'c27', name: 'Кейс Ангела', price: 70000, maxDrop: 690000, rarities: ['covert','covert','covert','covert','covert'], icon: '' },
   { id: 'c28', name: 'Кейс Пустоты', price: 80000, maxDrop: 790000, rarities: ['covert','covert','covert','covert','covert'], icon: '' },
@@ -1126,10 +1136,18 @@ let currentUser = null;
 function defaultState() { return { balance: 0, casesOpened: 0, upgrades: 0, upgradesWon: 0, inventory: [], usedPromos: [] }; }
 function getUsersList() { try { return JSON.parse(localStorage.getItem(USERS_KEY)) || []; } catch(e) { return []; } }
 function saveUsersList(list) { localStorage.setItem(USERS_KEY, JSON.stringify(list)); }
-function userKey(nick) { return 'jamdrop_user_' + nick.toLowerCase(); }
+function userKey(nick) { return 'jamdrop_user_' + sanitizeNick(nick).toLowerCase(); }
 function saveState() { if (currentUser) localStorage.setItem(userKey(currentUser), JSON.stringify(state)); }
 function loadState(nick) { try { const s = localStorage.getItem(userKey(nick)); if (s) return { ...defaultState(), ...JSON.parse(s) }; } catch(e) {} return defaultState(); }
 
+/* ★ Порог 9700: проверка лимита баланса */
+function isBalanceCapped() {
+  return !!(state && state.balance >= BALANCE_CAP);
+}
+
+/* ============================================================ */
+/* ==================== ГЕНЕРАЦИЯ ПУЛОВ ======================= */
+/* ============================================================ */
 function buildCasePool(caseObj, exclusivePools) {
   const minP = caseObj.minDrop;
   const maxP = caseObj.maxDrop;
@@ -1149,7 +1167,12 @@ function buildCasePool(caseObj, exclusivePools) {
   const step = (maxP - minP) / Math.max(selected.length - 1, 1);
   selected.forEach((s, i) => { s.price = Math.round(minP + step * i); });
   const casePrice = caseObj.price;
-  const paybackCount = Math.max(2, Math.round(selected.length * PAYBACK_RATIO_NORMAL));
+
+  // ★ Учёт paybackOverride для Кейса Дьявола (7 окупных)
+  const paybackCount = caseObj.paybackOverride
+    ? Math.min(caseObj.paybackOverride, selected.length)
+    : Math.max(2, Math.round(selected.length * PAYBACK_RATIO_NORMAL));
+
   const lossCount = selected.length - paybackCount;
   selected.sort((a, b) => a.price - b.price);
   const lossMax = Math.floor(casePrice * 0.85);
@@ -1241,6 +1264,9 @@ function generateCasePools() {
   });
 }
 
+/* ============================================================ */
+/* ========================= AUTH ============================= */
+/* ============================================================ */
 let authMode = 'login';
 function switchAuthTab(mode) {
   authMode = mode;
@@ -1251,12 +1277,12 @@ function switchAuthTab(mode) {
   document.getElementById('authMsg').textContent = '';
 }
 function submitAuth() {
-  const nick = document.getElementById('authUsername').value.trim();
+  const rawNick = document.getElementById('authUsername').value.trim();
   const pass = document.getElementById('authPassword').value;
   const confirm = document.getElementById('authPasswordConfirm').value;
   const msg = document.getElementById('authMsg');
-  if (!nick || nick.length < 3) { msg.style.color = '#ef4444'; msg.textContent = '❌ Ник от 3 символов'; return; }
-  if (!/^[a-zA-Z0-9_]+$/.test(nick)) { msg.style.color = '#ef4444'; msg.textContent = '❌ Только латиница, цифры, _'; return; }
+  const nick = sanitizeNick(rawNick);
+  if (!nick || nick.length < 3) { msg.style.color = '#ef4444'; msg.textContent = '❌ Ник от 3 символов (латиница/цифры/_)'; return; }
   if (!pass || pass.length < 4) { msg.style.color = '#ef4444'; msg.textContent = '❌ Пароль от 4 символов'; return; }
   const users = getUsersList();
   const exist = users.find(u => u.nick.toLowerCase() === nick.toLowerCase());
@@ -1276,6 +1302,7 @@ function submitAuth() {
   }
 }
 function enterGame(nick) {
+  nick = sanitizeNick(nick) || 'player';
   currentUser = nick;
   state = loadState(nick);
   localStorage.setItem(SESSION_KEY, nick);
@@ -1306,6 +1333,9 @@ function logout() {
 }
 function goHome() { switchTab('cases'); backToCases(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
+/* ============================================================ */
+/* ======================= ADMIN PANEL ======================== */
+/* ============================================================ */
 function unlockAdmin() {
   const input = document.getElementById('secretInput');
   const msg = document.getElementById('secretMsg');
@@ -1314,27 +1344,52 @@ function unlockAdmin() {
   input.value = '';
   document.getElementById('adminPanel').classList.add('active');
 }
+
+/* ★ Пополнение любого игрока по нику, даже если его нет в списке */
 function adminTopUp() {
-  const nick = document.getElementById('adminNick').value.trim();
+  const rawNick = document.getElementById('adminNick').value.trim();
   const amount = parseInt(document.getElementById('adminAmount').value);
   const msg = document.getElementById('adminMsg');
-  if (!nick) { msg.style.color = '#ef4444'; msg.textContent = '❌ Введите ник'; return; }
+  const nick = sanitizeNick(rawNick);
+  if (!nick) { msg.style.color = '#ef4444'; msg.textContent = '❌ Введите ник (латиница/цифры/_)'; return; }
   if (!amount || amount <= 0) { msg.style.color = '#ef4444'; msg.textContent = '❌ Неверная сумма'; return; }
+
   const users = getUsersList();
-  const exist = users.find(u => u.nick.toLowerCase() === nick.toLowerCase());
-  if (!exist) { msg.style.color = '#ef4444'; msg.textContent = `❌ Игрок не найден`; return; }
+  let exist = users.find(u => u.nick.toLowerCase() === nick.toLowerCase());
+
+  // если игрока нет — создаём запись, чтобы можно было пополнить
+  if (!exist) {
+    exist = { nick, pass: 'created_by_admin_' + Date.now(), created: Date.now() };
+    users.push(exist);
+    saveUsersList(users);
+    localStorage.setItem(userKey(nick), JSON.stringify(defaultState()));
+  }
+
   const playerKey = userKey(exist.nick);
   let playerData;
   try { playerData = JSON.parse(localStorage.getItem(playerKey)) || defaultState(); } catch(e) { playerData = defaultState(); }
+
   playerData.balance = (playerData.balance || 0) + amount;
   localStorage.setItem(playerKey, JSON.stringify(playerData));
-  msg.style.color = '#4ade80'; msg.textContent = `✅ ${exist.nick} +${amount.toLocaleString()} 🪙`;
-  if (currentUser && currentUser.toLowerCase() === exist.nick.toLowerCase()) { state.balance = playerData.balance; saveState(); updateBalance(); }
+
+  msg.style.color = '#4ade80';
+  msg.textContent = `✅ ${exist.nick} +${amount.toLocaleString()} 🪙`;
+
+  // если это текущий игрок — обновляем интерфейс
+  if (currentUser && currentUser.toLowerCase() === exist.nick.toLowerCase()) {
+    state.balance = playerData.balance;
+    saveState();
+    updateBalance();
+  }
+
   document.getElementById('adminNick').value = '';
   document.getElementById('adminAmount').value = '';
   showToast(`💸 ${exist.nick} +${amount.toLocaleString()} 🪙`);
 }
 
+/* ============================================================ */
+/* ============================ UI ============================ */
+/* ============================================================ */
 function updateBalance() {
   if (!state) return;
   document.getElementById('balanceDisplay').textContent = state.balance.toLocaleString();
@@ -1369,7 +1424,10 @@ function switchTab(tab) {
 }
 document.querySelectorAll('.nav-tab').forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
 
-const FAKE_NICKS = ['ShadowX', 'Killer_99', 'ZeusOne', 'NoScopeGod', 'AwpMaster', 'Rush_B', 'S1mpleFan', 'CyberWolf', 'GhostKZ', 'Титан', 'Молния', 'Мамкин_Про', 'xXxDimaXxX', 'Крым_CS', 'Vitaliy_777', 'SnakeEyes', 'ProGamer', 'Иван_2007', 'NightRider', 'TrollFace'];
+/* ============================================================ */
+/* ======================= FAKE FEED ========================== */
+/* ============================================================ */
+const FAKE_NICKS = ['ShadowX', 'Killer_99', 'ZeusOne', 'NoScopeGod', 'AwpMaster', 'Rush_B', 'S1mpleFan', 'CyberWolf', 'GhostKZ', 'Titan', 'Molniya', 'MamkinPro', 'xXxDimaXxX', 'Krym_CS', 'Vitaliy_777', 'SnakeEyes', 'ProGamer', 'Ivan_2007', 'NightRider', 'TrollFace'];
 let fakeFeedTimer = null;
 let fakeFeedItems = [];
 function startFakeFeed() {
@@ -1410,6 +1468,9 @@ function renderFakeFeed() {
   if (list2) list2.innerHTML = list.innerHTML;
 }
 
+/* ============================================================ */
+/* ======================= ПРОДАЖА / ПРОМО ==================== */
+/* ============================================================ */
 function sellSkin(idx) {
   const item = state.inventory[idx];
   if (!item) return;
@@ -1464,6 +1525,9 @@ function showInfo(type) {
 function closeInfo() { document.getElementById('infoOverlay').classList.remove('active'); }
 document.getElementById('infoOverlay').addEventListener('click', e => { if (e.target.id === 'infoOverlay') closeInfo(); });
 
+/* ============================================================ */
+/* ==================== ПОКАЗ СКИНОВ КЕЙСА =================== */
+/* ============================================================ */
 let currentCaseSkinsPool = [];
 let currentCaseSkinsSort = 'all';
 let currentCaseMaxDrop = Infinity;
@@ -1508,6 +1572,9 @@ function sortCaseSkins(type) { currentCaseSkinsSort = type; const n = document.q
 function closeCaseSkins() { document.getElementById('caseSkinsOverlay').classList.remove('active'); }
 document.getElementById('caseSkinsOverlay').addEventListener('click', e => { if (e.target.id === 'caseSkinsOverlay') closeCaseSkins(); });
 
+/* ============================================================ */
+/* ===================== СПИСОК КЕЙСОВ ======================== */
+/* ============================================================ */
 function renderCases() {
   const g = document.getElementById('casesGrid');
   g.innerHTML = CASES.map(c => `
@@ -1521,6 +1588,9 @@ function renderCases() {
     </div>`).join('');
 }
 
+/* ============================================================ */
+/* ====================== ОТКРЫТИЕ КЕЙСА ====================== */
+/* ============================================================ */
 let currentCase = null;
 let openCount = 1;
 
@@ -1555,9 +1625,17 @@ function backToCases() {
   document.getElementById('openingArea').classList.remove('active');
   document.getElementById('multiProgress').classList.remove('active');
 }
+
+/* ★ getRandomSkin: после BALANCE_CAP оставляем только неокупные скины (цена ≤ цены кейса) */
 function getRandomSkin(caseObj) {
-  const pool = caseObj.pool;
+  let pool = caseObj.pool;
   if (!pool || !pool.length) return { name: 'Unknown', icon: '', rarity: 'common', price: 10 };
+
+  if (isBalanceCapped()) {
+    const filtered = pool.filter(x => x.price <= caseObj.price);
+    if (filtered.length) pool = filtered;
+  }
+
   const maxPrice = Math.max(...pool.map(x => x.price));
   const weights = pool.map(x => { const ratio = x.price / maxPrice; return Math.pow(1 - ratio, 1.8) + 0.02; });
   const total = weights.reduce((a, b) => a + b, 0);
@@ -1732,6 +1810,9 @@ function showResult(skin) {
 }
 function closeResult() { document.getElementById('resultOverlay').classList.remove('active'); stopConfetti(); }
 
+/* ============================================================ */
+/* ========================= UPGRADE ========================== */
+/* ============================================================ */
 let selectedUpgradeIdxs = [];
 let selectedMultiplier = null;
 let selectedTargetSkin = null;
@@ -1911,7 +1992,10 @@ function doUpgrade(fast) {
   isUpgrading = true;
   const totalPrice = getSelectedTotal();
   const chance = getEffectiveChance();
-  const success = Math.random() * 100 < chance;
+  // ★ Порог 9700: апгрейды не заходят
+  let success = Math.random() * 100 < chance;
+  if (isBalanceCapped()) success = false;
+
   const canvas = document.getElementById('wheelRotor');
   const successAngle = (chance / 100) * 360;
   const fullRotations = fast ? 3 : 6;
@@ -1972,6 +2056,9 @@ function finishUpgrade(totalPrice, success) {
   updateSelectedInfo();
 }
 
+/* ============================================================ */
+/* ======================== CONFETTI ========================== */
+/* ============================================================ */
 const canvas = document.getElementById('confettiCanvas'), ctx = canvas.getContext('2d');
 let cparts = [], canim = null, crun = false;
 function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
@@ -1994,6 +2081,10 @@ function animate() {
   canim = requestAnimationFrame(animate);
 }
 function stopConfetti() { crun = false; if (canim) cancelAnimationFrame(canim); canim = null; ctx.clearRect(0, 0, canvas.width, canvas.height); canvas.style.display = 'none'; }
+
+/* ============================================================ */
+/* ========================== AUDIO =========================== */
+/* ============================================================ */
 let actx = null;
 function getAudio() { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); return actx; }
 function playTone(f, d, t = 'sine', v = 0.15, dl = 0) {
@@ -2036,6 +2127,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+/* ============================================================ */
+/* ====================== ЗАГРУЗКА API ======================== */
+/* ============================================================ */
 async function fetchWithTimeout(url, timeout = 10000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
@@ -2104,6 +2198,9 @@ async function loadCaseIcons() {
   }
 }
 
+/* ============================================================ */
+/* ========================== СТАРТ =========================== */
+/* ============================================================ */
 (async () => {
   try {
     await Promise.allSettled([loadAllSkins(), loadCaseIcons()]);
